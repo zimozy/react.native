@@ -3,10 +3,18 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 export default class App extends React.Component {
   constructor(props) {
+    console.log("App.constructor()");
     super(props);
     this.state = {items: []};
   }
   render() { 
+    console.log("App.render()");
+    
+    let todoItems = this.state.items.map((item) => {
+      console.log(item)
+      return (<TodoItem item={item}/>);
+    });
+
     return (
       <View style={styles.container}>
         <Text style={styles.title}>to-do ({this.state.items.length})</Text>
@@ -18,16 +26,29 @@ export default class App extends React.Component {
             this.addItem(event.nativeEvent.text)
           }}
          />
-         <TodoList items={this.state.items} style={styles.todoList} />
+         {todoItems}
       </View>
     );
   }
  
   addItem(text) {
+    console.log("App.addItem(" + text + ")");
     newState = this.state
     newState.items.push(text)
     this.setState(newState)
-    // console.log(this.state);
+    
+    console.log(this.state);
+  }
+
+  removeItem(text) {
+    console.log("App.removeItem(" + text + ")");
+    // newState = this.state
+    // console.log(text);
+    
+    // console.log(this.state)
+    // newState.splice(, 1)
+
+    // this.setState(newState)
   }
 }
 
@@ -67,18 +88,31 @@ const styles = StyleSheet.create({
   }
 });
 
-class TodoList extends React.Component {
+class TodoItem extends React.Component {
   constructor(props) {
+    console.log("TodoItem.constructor()");
     super(props)
 
-    this.state = {items: props.items}
+    this.item = props.item
   }
 
   render() {
-    let views = this.state.items.map((item) => {
-      console.log(item)
-      return (<Text style={styles.todoItem}>{item}</Text>);
-    })
-    return views
+    console.log("TodoItem.render()");
+
+    return <Text style={styles.todoItem} onPress={this.removeSelf}>{this.item}</Text>
+  }
+
+  removeSelf() {
+    console.log("TodoItem.removeSelf()");
+    // console.log(this.state)
+    // this.state.removeItem(this.item)
+    
+    
+    newState = this.state
+
+    console.log(this.state, newState);
+    
+    newState.items.splice(this.state.items.indexOf(this.item), 1)
+    this.setState(newState)
   }
 }
