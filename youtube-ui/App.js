@@ -1,5 +1,13 @@
 import React from 'react';
-import { StatusBar, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import VideoItem from './components/videoItem'
 import data from './data.json';
@@ -8,45 +16,51 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        
+
         <View style={styles.navBar}>
-          <Image source={require('./res/logo.png')} style={{height: 22, width: 98}} />
+          <Image source={require('./res/logo.png')} style={{ height: 22, width: 98 }} />
           <View style={styles.rightNav}>
             <TouchableOpacity>
-              <Icon style={styles.navItem} name="search" size={25}/>
+              <Icon style={styles.navItem} name="search" size={25} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Icon style={styles.navItem} name="account-circle" size={25}/>
+              <Icon style={styles.navItem} name="account-circle" size={25} />
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.body}>
-          <VideoItem video={data.items[0]} />
+          <FlatList
+            data={data.items}
+            renderItem={ (video) => <VideoItem video={video.item} /> }
+            keyExtractor={ (item) => item.id }
+            ItemSeparatorComponent={ 
+              ()=> <View style={ {backgroundColor: '#e5e5e5', height: 0.5, marginHorizontal: 5} } /> 
+            }/> 
         </View>
 
         <View style={styles.tabBar}>
-        
+
           <TouchableOpacity style={styles.tabItem}>
-            <Icon name="home" size={25}/>
+            <Icon name="home" size={25} style={styles.icon} />
             <Text style={styles.tabTitle}>Home</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.tabItem}>
-            <Icon name="whatshot" size={25}/>
+            <Icon name="whatshot" size={25} style={styles.icon} />
             <Text style={styles.tabTitle}>Trending</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.tabItem}>
-            <Icon name="subscriptions" size={25}/>
+            <Icon name="subscriptions" size={25} style={styles.icon} />
             <Text style={styles.tabTitle}>Subscriptions</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.tabItem}>
-            <Icon name="folder" size={25}/>
+            <Icon name="folder" size={25} style={styles.icon} />
             <Text style={styles.tabTitle}>Library</Text>
           </TouchableOpacity>
-          
+
         </View>
 
       </View>
@@ -72,7 +86,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   navItem: {
-    marginLeft: 25
+    marginLeft: 25,
+    color: '#888'
   },
   body: {
     flex: 1
@@ -82,7 +97,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     borderColor: '#E5E5E5',
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around' 
   },
   tabItem: {
     alignItems: 'center',
@@ -92,5 +107,8 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#3c3c3c',
     paddingTop: 4
+  },
+  icon: {
+    color: '#777'
   }
 });
