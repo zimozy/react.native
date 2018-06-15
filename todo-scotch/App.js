@@ -10,9 +10,9 @@ export default class App extends React.Component {
   render() { 
     console.log("App.render()");
     
-    let todoItems = this.state.items.map((item) => {
+    let todoItems = this.state.items.map((item) => { 
       console.log(item)
-      return (<TodoItem item={item}/>);
+      return (<TodoItem key={item} item={item} removeItem={(text) => {this.removeItem(text)}} />);
     });
 
     return (
@@ -91,28 +91,26 @@ const styles = StyleSheet.create({
 class TodoItem extends React.Component {
   constructor(props) {
     console.log("TodoItem.constructor()");
+    console.log(props)
     super(props)
 
     this.item = props.item
+    this.removeItem = props.removeItem
   }
 
   render() {
     console.log("TodoItem.render()");
 
-    return <Text style={styles.todoItem} onPress={this.removeSelf}>{this.item}</Text>
+    return <Text style={styles.todoItem} onPress={() => { this.removeSelf() } }>{this.item}</Text>
   }
 
   removeSelf() {
     console.log("TodoItem.removeSelf()");
+    console.log(this)
+    // this.removeItem(this.item)
     // console.log(this.state)
     // this.state.removeItem(this.item)
     
-    
-    newState = this.state
-
-    console.log(this.state, newState);
-    
-    newState.items.splice(this.state.items.indexOf(this.item), 1)
-    this.setState(newState)
+    // newState.items.splice(this.state.items.indexOf(this.item), 1)
   }
 }
